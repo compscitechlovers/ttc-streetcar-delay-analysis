@@ -12,4 +12,4 @@ The repo is organized as follows:
 - `outputs/paper/Paper.qmd`: The Quarto Document file
 - `outputs/paper/Paper.pdf`: The PDF file generated using the Quarto Document file
 - `scripts/00-download_data.R`: Script used in the Quarto Document file to download the data
-- `scripts/00-simulation_data.R`: Script used in the Quarto Document file to clean the data
+- `scripts/00-simulation_data.R`: Script used in the Quarto Document file to simulate the data
