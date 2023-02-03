@@ -1,0 +1,274 @@
+---
+title: "Toronto Streetcar Delays Varies by Different Causes"
+author: "Sagith Kalaichelvam"
+date: "`r Sys.time()`"
+date-format: "D MMMM YYYY"
+format: 
+  pdf:
+    documentclass: article
+    geometry: margin = 1in
+    abstract: "The TTC streetcar system in Toronto is the biggest streetcar system in Canada and it is very convenient way for commuters to commute at all times. But, when the streetcar system becomes messy for commmuters, then it can be very painful for all riders, especially when its during rush hour. As the number of streetcar delays continues to rise, the reliability of the streetcar is very questionable because riders will prefer to have a transit that is always reliable. Any type of data is very useful for evaluating and understanding common delay causes and patterns among delay occurrences. In this analysis, we noted a strong correlation between delay frequency and operations, since there are many so many number of counts in operations as the cause of the delay in streetcars. While, diversion tends to have the longest average delay time when comparing to other incidents. Finally, there are some useful data that was found to notice the number of counts in delays by each day, which shows the day that has most delays, and least delays. These analysis of data could help anyone from the riders that can make better decisions after facing a streetcar that is on delay. Also, TTC and Metrolinx employees can find this much helpful to make some organizational goals to minimize the number of incidents to occur that causes the delays in streetcars, and try to minimize the delay time for incidents that currently have a long average delay time."
+    toc: true
+    number-sections: true
+    colorlinks: true
+    lot: true
+    lof: true
+thanks: "Code and data is available at: github.com/compscitechlovers/ttc-streetcar-delay-analysis"
+bibliography: references.bib
+---
+
+# Introduction
+
+The Toronto streetcar system serves about 187,000 riders daily in 2021, but we can expect more than 187.000 riders daily in 2022, which provides an innovative and convient transit system for most people traveling across the city [@operatingstats]. In Toronto, streetcars have been existed for almost 100 years which was part of the evolution of the TTC (Toronto Transit Commission) [@streetcarsarchives]. The streetcar systems continute to grow every day in terms of number of ridership. The TTC streetcar is very important for many commuters that will be connecting via the TTC subway or GO Transit to commute to other parts of the city to school, work, or for pleasure. There are many issues happening within the city from diversion due to road constructions to investigations by police, which cause some major and minor delays for commuters using the streetcars at Toronto. 
+
+Any data related to streetcars is an important source that can be helpful to understand any potential areas of improvement. Most streetcars are able to operate at the schedule time, so that it can provide a reliable for commute for Torontorians. But, there are times where delays are possible, which is affecting the commute for many people. A lot of people do not know a lot of information about type of incidents to the number of incidents that have caused the delays within the Toronto streetcar system. Any piece of data can be helpful for TTC to decide whether they should change streetcar models, change diverted routes to a different non-busier streets, or provide annoucements ahead on time.
+
+In my paper, I will analyze the TTC streetcar delay data from 2022 which is coming from `opendatatoronto` [@opendatatoronto], and it finds the most common causes of the streetcar delays, and gather information in a visualization. There are delays that also depends on the day of the week. There could be chances that there are relationships between the direction travelled travelled the and the delay. I will try to compare the lowest and highest type of delays through incidents.
+This analysis will be written in `R` [@citeR], which will be using the `dplyr` [@dplyr],  `bookdown` [@bookdown], `knitr` [@knitr],  `tidyverse` [@tidyverse]. Any figures within this paper are generated using `ggplot2` [@ggplot] and tables are created with `knitr` [@knitr] and `kableExtra` [@kableextra].
+
+
+# Data
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+
+library(opendatatoronto)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(scales)
+```
+
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+#| include: false
+
+#### Simulate ####
+set.seed(853)
+
+simulated_delay_data <-
+  tibble(
+    date = rep(x = as.Date("2022-01-01") + c(0:364), times = 3),
+    line = c(
+      rep(x = "Line 501", times = 365),
+      rep(x = "Line 504", times = 365),
+      rep(x = "Line 505", times = 365)
+    ),
+    min_delay =
+      rpois(
+        n = 365 * 3,
+        lambda = 30
+      ) 
+  )
+
+head(simulated_delay_data)
+```
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+#| include: false
+
+
+#### Acquire ####
+ttc_streetcar <-
+list_package_resources("b68cb71b-44a7-4394-97e2-5d2f41462a5d") |>
+filter(name == 
+  "ttc-streetcar-delay-data-2022") |>
+  # Having reduced the dataset to one row we can get the resource
+  get_resource()
+
+write_csv(
+  x = ttc_streetcar,
+  file = "ttc_streetcar.csv"
+)
+
+head(ttc_streetcar)
+```
+
+
+
+## Data Source and Collection
+
+All of this report uses the TTC Streetcar Delay Data [@dataset], which is obtained from the City of Toronto’s Open Data Portal [@opendatatoronto]. This dataset was accessed through R using the `opendatatoronto` package [@opendatatoronto]. The data is published by the TTC (which stands for Toronto Transit Commission) on a monthly basis since 2014, while it was last updated on January 23, 2023. Not all information was posted about how the data was collected, but it is easy to expect that this data might been collected through reports that is directly coming from the TTC as the data contains variables such as ambiguous alphabetical codes which correspond to all of the format that TTC uses based on the README file from `opendatatoronto` [@opendatatoronto].
+
+It is kind of confusing how the data was recorded orginally. Most likey the driver of the streetcar must be the one that is recording all datas of any delays that occur on streetcars while driving it. There is some ethical issues to consider because there is a possibility of human error when recording the data, since humans are expected to make mistakes at least once for recording any source of data. In incidents where the driver of the streetcar might be responsibile, then it is possibile that there could be a source of bias where the driver of the streetcar to record fake data and list the cause of delay into a different catergory of incidents for their own personal issue. There are lots of news from the media that TTC streetcar delays are occuring a lot from bad weather conditions, but according to this dataset, it does not seem like weather conditions are the cause [@weather]. If the data was recorded unethically and through a biased point of view, then all of these statistical analysis can be listed as unvalid. So, all of the data in this report is only validated with the data that was collected from the City of Toronto’s Open Data Portal [@opendatatoronto], and of the way how the `Tables` and `Figures` was created.
+
+The TTC streetcar delay dataset from 2022 was used for this analysis which is from January 1, 2022 to December 31, 2022 without any gaps. The dataset seems to have about 17,655 samples coming from 10 variables, but only 4 of the variables were used often that were very important to get some useful information. Important variables was used to identify information from the TTC streetcar delay data, which are Line (ex. 501, 504, 505, etc), Day, Incident, and Min Delay. All of the Tables, and Figures were created with the cleaned version of the dataset, so that all variables can appear in a format that humans can easily identify, and look more organized. Variables are renamed in a way such as `min_delay` to `Min Delay` or capitalizing the first letter for rest of the variables. Testing was done immediately after the Tables and Figures were created to make sure that it is outputting information accurately from the correct source without any invalid data. Testing were shown to be perfect that the number of counts in delay for each incident or day of the week was matching accurately. The average delay time was calculated accurately based on the incident and day of the week. 
+
+
+
+## Tables
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+#| include: false
+
+#### Explore ####
+ttc_streetcar_clean <-
+  read_csv(
+    here::here("inputs/data/cleaned_ttc_streetcar.csv"),
+    show_col_types = FALSE
+  )
+```
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+
+ttc_streetcar_clean |>
+  drop_na(min_delay) |> # We only want rows that have data
+  group_by(incident) |> # We want to group by type of incident
+  summarize(average_delay = mean(min_delay)) |>
+  kable(
+    caption = "Streetcar Average Delay Time by Incidents",
+    col.names = c(
+      "Incident",
+      "Average delay time"
+    ),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = ""
+  )
+```
+
+Table 1 shows that the average delay time from incidents can vary based on its type during the year 2022 [@opendatatoronto]. We can expect this table can provide an important source of information that the riders can make alternative planning when taking the TTC streetcars after hearing annoucements from TTC about delays and its type of incident. For example, if a young man takes the 510 Spadina from Union Station to Spadina Ave and College St, but it end up facing a delay of an incident from a diversion that could last about 1 hour. Then, this young man might have seen this paper, which will allow him to make some planning and consider an alternative commute, which will most likely be taking the Line 1 Subway from Union Station to Queen's Park Station, and then take the 506 Carleton to College St and Spadina Ave, or walk there from the Queen's Park Subway station. Currently, TTC is bad at providing information about alternatives of the streetcar routes when there is a delay or closure, TTC should consider this report to provide information about alternatives, so that riders will not need to frustrate a lot when there is a delay on streetcars [@alternatives]. Incidents such as Diversion, Rail/Switches, and Overhead tends to have the longest streetcar delays in time within Toronto. So, riders have to ride or wait much longer on streetcar routes that are delayed by Diversion, Rail/Switches, and Overhead. Diversion is longest delay time in average for streetcars, which does make sense diversion causes streetcar to go on another street with rails or tracks, which tend to cause long delays as the streetcar travels through different streets. Both of the cleaning incidents, operations, utilized off route, and mechanical problems tends to have the lowest delay time in average for these streetcars. 
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+
+ttc_streetcar_clean |>
+  drop_na(min_delay) |> # We only want rows that have data
+  group_by(day) |> # We want to group by type of incident
+  summarize(average_delay = mean(min_delay)) |>
+  kable(
+    caption = "Streetcar Average Delay Time by Day",
+    col.names = c(
+      "Day",
+      "Average delay time"
+    ),
+    digits = 1,
+    booktabs = TRUE,
+    linesep = ""
+  )
+```
+
+  
+Based on Table 2, it shows the average delay time when an incident occurs that causes a streetcar delay in Toronto. Weekends such as Saturdays and Sundays tends to have longer average delay time compared to weekdays. This can be due to the urgency and importance of riders during weekdays. Most riders on weekdays tend to use the TTC streetcars for school and work purposes, which is very critical for riders to get to their destination on weekdays. The riders on weekends tend to take the TTC Streetcars for pleasure purposes such as going out with their friends or family to entertainment attraction places within Toronto. 
+
+All riders, and others in the public should notice that TTC does give importance to their own riders, and always tries to aim for having less delay times as possible, especially on weekdays since they are meant for riders to commute to school or work. TTC does care about their riders, which is why they are trying their full effort to reduce the average delay time on weekdays. After seeing this table, everyone that complains about TTC should learn that TTC does care about their riders by having lower average delay time on workdays, this data helps to describe the importance and reliability of the TTC services such as the streetcars in Toronto.
+
+
+
+
+
+## Graphs
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+#| include: false
+
+ttc_streetcar_clean |>
+  count(incident)
+
+ttc_streetcar_clean |>
+  ggplot(aes(x = incident)) + # aes abbreviates "aesthetics" 
+  # and enables us to specify the x axis variable
+  geom_bar()
+```
+
+```{r fig.width=7, fig.height=5}
+#| messages: false
+#| echo: false
+#| warning: false
+#| label: fig-charts
+#| fig-cap: Number of Delays by Incidents
+
+theme_set(theme(text = element_text(family = "Times")))
+
+ttc_streetcar_clean |>
+  ggplot(aes(x = incident, fill = incident)) +
+  geom_bar() +
+  scale_x_discrete(labels = c("C-D", "C-U", "C", "D","ES", "GD", "HD", "I","LES", "M", "O", "OH", "R/S", "S", "UOR")) +
+  scale_fill_discrete(name="Incident Names") +
+  theme_minimal() + # Make the theme neater
+  labs(
+    title = "2022 Streetcar Delays",
+    x = "Type of Incident",
+    y = "Number of Delays"
+  ) # Make the labels more meaningful
+```
+
+
+After using the variables from the dataset, and cleaning some of it, we can easily see these information in terms of categorizing streetcar delays to gain a better understanding of when and where delays occur, for example. (Figure 1 and Figure 2)^[Colours was used for both graphs in Figure 1 and Figure 2 are from the `scales` package [@scales]] shows the total number of streetcar delays broken down by different type of incidents for Figure 1, and total number of streetcar delays broken down by the day of the week for Figure 2.
+
+The graph from Figure 1 shows that there are a lots of incidents that have happeneding during the year of 2022. Also, there are many different types of incidents that have occured, which have created delays throughout the Toronto Streetcar systems, and affected many commmuters. Most of the streetcar lines in Toronto are operates within downtown which is the heart of Toronto. It is expected that the population of downtown will increase in double, which means that there is a possibility that there might be more riders in the future [@population]. The TTC will need to minimize the number of delays that are unnecessary from significant counts of Operations. The incident of operations was a lot in the year of 2022, which created some delay for riders commuting on TTC streetcars.
+
+
+\newpage
+
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+#| include: false
+
+ttc_streetcar_clean |>
+  count(incident)
+
+ttc_streetcar_clean |>
+  ggplot(aes(x = day)) + # aes abbreviates "aesthetics" 
+  # and enables us to specify the x axis variable
+  geom_bar()
+```
+
+```{r}
+#| messages: false
+#| echo: false
+#| warning: false
+#| label: fig-charts1
+#| fig-cap: Streetcar Delays by Day of the Week
+
+theme_set(theme(text = element_text(family = "Times")))
+
+ttc_streetcar_clean |>
+  ggplot(aes(fct_infreq(day), fill = day)) +
+  geom_bar() +
+  scale_x_discrete(labels = c("Fri", "Sat", "Thur", "Wed", "Tue", "Mon", "Sun"), name = "Day of the Week") +
+  scale_y_discrete(name = "Number of Delays") +
+  scale_fill_discrete(name="Day") +
+  ggtitle("Streetcar Delays Peak by Day") +
+  theme_minimal()
+```
+
+Based on the results we get from Figure 2, it shows that Friday, and Saturday tends to have most of the number of delays throughout the week during the year of 2022. While the middle of the week tends to have the somewhere in the middle number of delays for streetcars in Toronto. Monday and Sunday tends to lave less count of number of delays for streetcars. We can easily expect more on Friday, and Saturday to have more delays because a lot of people will be enjoying their Friday nights and Saturday to go out with their friends for shopping, dinner, etc by taking the TTC streetcars. As more people are in areas of where streetcars are, these can lead into potential delays for streetcars because it can easily create problems such as operational, emergency services, police investigations due to social issues, etc. The rush or unneccessary issues that people create tends to causes lots of incidents which affects the TTC Streetcar, and tends to create the delays for the streetcars in Toronto. All riders and people in Toronto should learn how to safely ride the transit services without creating any potential problems that could harm others and create potentials for streetcars when it is very unneccessary in incidents such as investigation, security, emergency services, collision, etc. 
+
+
+# Discussion
+
+After looking at all of the tables, and figures. We should expect some improvements from both the TTC employees, and the riders During the year of 2022, the delay of streetcars varies between the causes from incidents, and they day it was. The number of delays were mainly from operational issues. Average delay times tend to last much longer from diversion, while the weekends tend to have larger delay times when comparing to the weekdays. From this statistical analysis, we can see how TTC employees are causing unnecessary delays from operational issues in 2022, which can easily be avoided in certain ways. TTC should try to do more testing and maintenance for streetcars during overnight or weekends before running it to the public. TTC is currently doing lots of testing and maintenance for the subway system, and the new Eglinton Crosstown LRT which will be launched soon [@lrtnews]. If, TTC does more testing and maintenance on the streetcar system after reading this report, then the number of counts in delays of streetcars will drop significantly by the next update on dataset for upcoming year. 
+
+The riders of using the TTC streetcars in Toronto are sometimes responsible for the delays because some riders are creating issues that are unsafe which leads into police investigation, security, and collison on streets. If more riders, and the public tries to a safe environment within the streetcar and outside in the streets, then we can not expect these unnecessary incidents to occur to cause more delays for streetcars. Another point, there are lots of news that riders are complaining about TTC being unreliable, and not giving importance to riders [@riderscomplaint]. This statement is not true because the data from Table 2 shows that delays tend to last longer on weekends, but shorter on weekdays. We can easily expect that more riders take the TTC on weekdays for going to school or work. Commutes on weekdays is very critical for all riders using the TTC, which is why the data describes that TTC is trying their best to have a lower average delay time on the weekdays. So, that all riders on weekdays can get to their destination with a shorter length of delay time instead of going facing longer delay time. If there are any questions to be asked or provide a suggestion to TTC, then everything can be found easily on TTC's website^[Any complaints or suggestions to TTC can be done on https://www.ttc.ca/customer-service/complaints-compliments-suggestions [@complaint]].
+
+\newpage
+
+
+# References
+
+
+
