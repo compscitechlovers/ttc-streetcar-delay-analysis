@@ -1,3 +1,4 @@
+#### Preamble ####
 # Purpose: Download streetcar delay data from the OpenDataToronto portal
 # Author: Sagith Kalaichelvam
 # Date: 26 January 2023
@@ -6,7 +7,9 @@
 # Pre-requisites: 
 # - Install required packages: opendatatoronto, tidyverse
 
+#### Workplace set-up ####
 library(opendatatoronto)
+library(tidyverse)
 library(dplyr)
 
 # get package
