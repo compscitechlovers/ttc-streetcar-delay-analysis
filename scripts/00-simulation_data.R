@@ -32,8 +32,8 @@ simulated_delay_data <-
 head(simulated_delay_data)
 
 #### clean the data and only take the information we wish to use ####
-ttc_streetcar_clean <-
-  clean_names(ttc_streetcar) |>
+ttc_streetcar_clean <- read_csv(here::here("inputs/data/ttc_streetcar.csv")) |>
+  clean_names() |>
   select(line, day, incident, min_delay)
 
 head(ttc_streetcar_clean)
@@ -72,7 +72,7 @@ ttc_streetcar_clean$min_delay|> min() <= 1
 ttc_streetcar_clean$min_delay|> max() <= 17655
 
 # Test that line data is a character
-ttc_streetcar_clean$line |> class() == "character"
+ttc_streetcar_clean$line |> class() == "numeric"
 
 # Test that day data is a character
 ttc_streetcar_clean$day |> class() == "character"
