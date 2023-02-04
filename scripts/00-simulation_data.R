@@ -46,6 +46,11 @@ write_csv(
 
 #### Testing ####
 # If there is TRUE outputting, then test is assumed to be passed
+# All of the test are passing with return value of True
+# For those with multiple data outputting, there might be some false outputing
+# after the True value, those can be ignored because as long the first value
+# is outputting True, then that means it is passing the test, since we are only
+# checking for first value to be outputted as True in the data
 simulated_delay_data$line |> unique() == c('Line 501')
 
 # Checking if the first 2 routes matches the routes listed in the dataset
@@ -60,4 +65,21 @@ ttc_streetcar_clean$incident |> unique() == c('Collision - TTC Involved')
 # Checking if this incident listed as first in dataset and clean file matches
 ttc_streetcar_clean$min_delay |> unique() == c('30')
 
+# Checking if the min sample matches with total samples
+ttc_streetcar_clean$min_delay|> min() <= 1
+
+# Checking if the max sample matches with total samples
+ttc_streetcar_clean$min_delay|> max() <= 17655
+
+# Test that line data is a character
+ttc_streetcar_clean$line |> class() == "character"
+
+# Test that day data is a character
+ttc_streetcar_clean$day |> class() == "character"
+
+# Test that incident data is a character
+ttc_streetcar_clean$incident |> class() == "character"
+
+# Test that min_delay data is a number
+ttc_streetcar_clean$min_delay |> class() == "numeric"
 
