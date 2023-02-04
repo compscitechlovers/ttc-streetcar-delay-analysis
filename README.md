@@ -16,4 +16,4 @@ The repo is organized as follows:
 
 ## Important Information
 
-If you face difficulty running certain files, then you can still download this entire project as a zip file from [Google Drive](https://drive.google.com/file/d/1qqsf0mIDDQACJS3396aX6cBrywkjXmFL/view?usp=sharing)
+If you face difficulty running certain files, then you can still download this entire project as a zip file by contacting me.
