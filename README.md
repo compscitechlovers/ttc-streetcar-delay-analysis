@@ -13,3 +13,7 @@ The repo is organized as follows:
 - `outputs/paper/Paper.pdf`: The PDF file generated using the Quarto Document file
 - `scripts/00-download_data.R`: Script used in the Quarto Document file to download the data
 - `scripts/00-simulation_data.R`: Script used in the Quarto Document file to simulate the data
+
+## Important Information
+
+If you face difficulty running certain files, then you can still download this entire project as a zip file from [Google Drive](https://drive.google.com/file/d/1qqsf0mIDDQACJS3396aX6cBrywkjXmFL/view?usp=sharing)
