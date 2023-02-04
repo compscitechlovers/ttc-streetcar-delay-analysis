@@ -83,3 +83,4 @@ ttc_streetcar_clean$incident |> class() == "character"
 # Test that min_delay data is a number
 ttc_streetcar_clean$min_delay |> class() == "numeric"
 
+
