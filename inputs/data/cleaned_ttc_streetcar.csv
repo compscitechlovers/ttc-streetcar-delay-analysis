@@ -953,7 +953,7 @@ NA,Sunday,Cleaning - Unsanitary,15
 504,Wednesday,Operations,5
 504,Wednesday,Operations,5
 504,Wednesday,Operations,5
-RAD,Wednesday,Operations,22
+NA,Wednesday,Operations,22
 504,Wednesday,Cleaning - Unsanitary,3
 505,Wednesday,Operations,8
 511,Wednesday,Operations,8
@@ -1234,7 +1234,7 @@ NA,Wednesday,Utilized Off Route,10
 504,Sunday,Operations,5
 506,Sunday,Mechanical,9
 501,Sunday,Operations,9
-RAD,Sunday,Mechanical,0
+NA,Sunday,Mechanical,0
 504,Sunday,Diversion,71
 504,Sunday,Utilized Off Route,5
 504,Sunday,Mechanical,5
@@ -1643,7 +1643,7 @@ RAD,Sunday,Mechanical,0
 503,Friday,Operations,10
 506,Friday,Operations,8
 505,Friday,Operations,8
-RAD,Friday,Held By,18
+NA,Friday,Held By,18
 501,Friday,Collision - TTC Involved,9
 503,Friday,Security,0
 506,Friday,Collision - TTC Involved,60
@@ -1736,7 +1736,7 @@ RAD,Friday,Held By,18
 505,Saturday,Operations,8
 512,Saturday,Operations,5
 504,Saturday,Mechanical,5
-RAD,Saturday,Operations,50
+NA,Saturday,Operations,50
 505,Saturday,Operations,51
 512,Saturday,Security,5
 506,Saturday,Emergency Services,35
@@ -1811,9 +1811,9 @@ RAD,Saturday,Operations,50
 506,Monday,Emergency Services,7
 504,Monday,Operations,5
 503,Monday,Operations,10
-OTC,Monday,Operations,0
+NA,Monday,Operations,0
 501,Monday,General Delay,8
-OTC,Monday,Emergency Services,0
+NA,Monday,Emergency Services,0
 505,Monday,General Delay,0
 505,Monday,Collision - TTC Involved,25
 512,Monday,General Delay,12
@@ -1872,7 +1872,7 @@ OTC,Monday,Emergency Services,0
 504,Tuesday,Held By,10
 506,Tuesday,Collision - TTC Involved,7
 505,Tuesday,Mechanical,8
-OTC,Tuesday,Diversion,33
+NA,Tuesday,Diversion,33
 506,Tuesday,Collision - TTC Involved,20
 504,Tuesday,Operations,5
 504,Tuesday,Held By,17
@@ -2310,7 +2310,7 @@ NA,Thursday,General Delay,0
 501,Thursday,Operations,10
 501,Thursday,Operations,10
 501,Thursday,Operations,10
-RAD,Thursday,Emergency Services,0
+NA,Thursday,Emergency Services,0
 503,Thursday,Mechanical,10
 501,Thursday,Emergency Services,8
 510,Thursday,Mechanical,15
@@ -2674,7 +2674,7 @@ RAD,Thursday,Emergency Services,0
 501,Friday,Mechanical,9
 501,Friday,Collision - TTC Involved,9
 511,Friday,Emergency Services,7
-RAD,Friday,Investigation,0
+NA,Friday,Investigation,0
 509,Friday,Security,5
 504,Friday,Operations,5
 506,Friday,Operations,8
@@ -2791,7 +2791,7 @@ RAD,Friday,Investigation,0
 501,Sunday,Operations,8
 504,Sunday,Mechanical,6
 504,Sunday,Operations,6
-RAD,Sunday,Mechanical,1
+NA,Sunday,Mechanical,1
 506,Sunday,Operations,8
 501,Sunday,Operations,8
 504,Sunday,Mechanical,6
@@ -3563,7 +3563,7 @@ NA,Sunday,General Delay,0
 506,Sunday,Emergency Services,8
 510,Sunday,Operations,7
 501,Sunday,Held By,21
-RAD,Sunday,Emergency Services,1
+NA,Sunday,Emergency Services,1
 506,Sunday,Operations,8
 501,Sunday,Security,9
 501,Sunday,Operations,9
@@ -3745,7 +3745,7 @@ NA,Wednesday,General Delay,0
 504,Thursday,Operations,5
 506,Thursday,Operations,8
 512,Thursday,Mechanical,6
-RAD,Thursday,Operations,0
+NA,Thursday,Operations,0
 504,Thursday,Operations,5
 506,Thursday,Operations,5
 501,Thursday,Mechanical,8
@@ -4819,7 +4819,7 @@ NA,Saturday,General Delay,0
 501,Tuesday,Operations,9
 501,Tuesday,Cleaning - Unsanitary,9
 504,Tuesday,Operations,0
-OTC,Tuesday,Security,8
+NA,Tuesday,Security,8
 501,Tuesday,Operations,9
 501,Tuesday,Operations,9
 501,Tuesday,Mechanical,8
@@ -8713,7 +8713,7 @@ NA,Monday,Emergency Services,0
 510,Sunday,Mechanical,15
 505,Sunday,Operations,9
 506,Sunday,Held By,7
-RAD,Sunday,Operations,0
+NA,Sunday,Operations,0
 504,Sunday,Mechanical,5
 501,Sunday,Emergency Services,10
 511,Sunday,Mechanical,9
@@ -9204,7 +9204,7 @@ RAD,Sunday,Operations,0
 511,Friday,Mechanical,7
 501,Friday,General Delay,8
 506,Friday,Operations,8
-(RAD,Friday,Operations,0
+NA,Friday,Operations,0
 505,Friday,Operations,9
 510,Friday,Operations,7
 505,Friday,Operations,9
@@ -17294,7 +17294,7 @@ NA,Wednesday,Security,0
 505,Thursday,General Delay,0
 503,Thursday,General Delay,0
 504,Thursday,Security,8
-RAD,Thursday,Operations,0
+NA,Thursday,Operations,0
 504,Thursday,Mechanical,7
 501,Thursday,Utilized Off Route,8
 501,Thursday,Cleaning - Unsanitary,8
